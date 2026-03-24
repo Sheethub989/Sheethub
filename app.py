@@ -103,31 +103,81 @@ st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
 # ---------------- LOGIN ----------------
+# ---------------- LOGIN ----------------
 if st.session_state.user_id is None:
 
     st.markdown("""
-    <div class="login glass">
-        <h2 style="text-align:center;">🔐 Login to SheetHub</h2>
-        <p style="text-align:center; color:#94a3b8;">Start cleaning Excel instantly</p>
-    </div>
+    <style>
+
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+        gap: 60px;
+    }
+
+    .login-left {
+        max-width: 400px;
+    }
+
+    .login-left h1 {
+        font-size: 2.2rem;
+        font-weight: bold;
+    }
+
+    .login-left p {
+        color: #94a3b8;
+    }
+
+    .login-card {
+        width: 350px;
+        padding: 30px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(12px);
+        text-align: center;
+    }
+
+    </style>
     """, unsafe_allow_html=True)
 
-    email = st.text_input("", placeholder="Enter your email")
+    # LAYOUT
+    col1, col2 = st.columns([1.2, 1])
 
-    col1, col2, col3 = st.columns([1,1,1])
+    with col1:
+        st.markdown("""
+        <div class="login-left">
+            <h1>📊 SheetHub</h1>
+            <p>Clean Excel data instantly.<br>No formulas. No headaches.</p>
+
+            <br>
+
+            <div>⚡ Fast Cleaning</div>
+            <div>🤖 AI Insights</div>
+            <div>📊 Smart Charts</div>
+        </div>
+        """, unsafe_allow_html=True)
+
     with col2:
-        login = st.button("🚀 Continue", use_container_width=True)
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-    if login:
-        if "@" not in email:
-            st.error("Enter valid email")
-        else:
-            st.session_state.user_id = get_or_create_user(email)
-            st.session_state.email = email
-            st.rerun()
+        st.markdown("### 🔐 Login")
+        st.caption("Start in seconds")
+
+        email = st.text_input("Email", placeholder="you@example.com")
+
+        if st.button("🚀 Continue", use_container_width=True):
+            if "@" not in email:
+                st.error("Enter valid email")
+            else:
+                st.session_state.user_id = get_or_create_user(email)
+                st.session_state.email = email
+                st.rerun()
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
     st.stop()
-
 # ---------------- USER ----------------
 user_id = st.session_state.user_id
 is_pro = get_user_plan(user_id) == "pro"
@@ -141,7 +191,12 @@ if st.sidebar.button("Logout"):
     st.rerun()
 
 st.sidebar.markdown("## 💳 Plan")
-st.sidebar.info("PRO 🚀" if is_pro else "Free")
+
+if is_pro:
+    st.sidebar.success("PRO 🚀")
+else:
+    st.sidebar.info("Free Plan")
+    st.sidebar.markdown("🚀 **PRO coming soon**")
 
 remaining = remaining_quota(user_id)
 used = FREE_DAILY_LIMIT - remaining
