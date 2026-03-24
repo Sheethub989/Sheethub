@@ -119,28 +119,96 @@ st.markdown("""
 st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
-# ---------------- 🔐 LOGIN ----------------
+# ---------------- ULTRA PREMIUM LOGIN ----------------
 if st.session_state.user_id is None:
 
-    col1, col2, col3 = st.columns([1, 1.2, 1])
+    st.markdown("""
+    <style>
 
-    with col2:
-        st.markdown('<div class="login-box">', unsafe_allow_html=True)
+    /* BACKGROUND GLOW */
+    .stApp {
+        background:
+        radial-gradient(circle at 20% 20%, rgba(14,165,233,0.25), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(34,197,94,0.25), transparent 40%),
+        #020617;
+    }
 
-        st.markdown("## 📊 SheetHub")
-        st.caption("Clean Excel instantly")
+    /* CENTER WRAPPER */
+    .center-wrap {
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:90vh;
+    }
 
-        email = st.text_input("", placeholder="Enter your email")
+    /* CARD */
+    .login-card {
+        width:360px;
+        padding:35px;
+        border-radius:20px;
+        background: rgba(255,255,255,0.06);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        text-align:center;
+    }
 
-        if st.button("🚀 Continue", use_container_width=True):
-            if "@" not in email:
-                st.error("Enter valid email")
-            else:
-                st.session_state.user_id = get_or_create_user(email)
-                st.session_state.email = email
-                st.rerun()
+    /* LOGO */
+    .logo {
+        font-size:26px;
+        font-weight:600;
+        margin-bottom:6px;
+    }
 
-        st.markdown("</div>", unsafe_allow_html=True)
+    .subtitle {
+        color:#94a3b8;
+        font-size:14px;
+        margin-bottom:25px;
+    }
+
+    /* INPUT FIX */
+    .stTextInput > div > div > input {
+        border-radius:12px !important;
+        padding:12px !important;
+        background: rgba(255,255,255,0.08) !important;
+        border:1px solid rgba(255,255,255,0.1) !important;
+    }
+
+    /* BUTTON FIX */
+    .stButton button {
+        height:45px;
+        border-radius:12px;
+        font-weight:600;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border:none;
+        color:white;
+    }
+
+    .stButton button:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 30px rgba(34,197,94,0.4);
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="center-wrap">', unsafe_allow_html=True)
+    st.markdown('<div class="login-card">', unsafe_allow_html=True)
+
+    st.markdown('<div class="logo">📊 SheetHub</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Clean Excel instantly</div>', unsafe_allow_html=True)
+
+    email = st.text_input("", placeholder="Enter your email")
+
+    if st.button("🚀 Continue", use_container_width=True):
+        if "@" not in email:
+            st.error("Enter valid email")
+        else:
+            st.session_state.user_id = get_or_create_user(email)
+            st.session_state.email = email
+            st.rerun()
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
     st.stop()
 
