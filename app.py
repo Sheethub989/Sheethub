@@ -120,6 +120,7 @@ st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
 # ---------------- PREMIUM LOGIN FIX ----------------
+# ---------------- FINAL CLEAN LOGIN ----------------
 if st.session_state.user_id is None:
 
     st.markdown("""
@@ -132,56 +133,43 @@ if st.session_state.user_id is None:
         #020617;
     }
 
-    .login-container {
-        text-align: center;
-        padding-top: 80px;
-    }
-
-    .logo {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    .tagline {
-        color: #94a3b8;
-        margin-bottom: 30px;
-        font-size: 14px;
-    }
-
-    .login-card {
-        max-width: 400px;
+    /* CENTER CONTAINER */
+    .center-box {
+        max-width: 420px;
         margin: auto;
+        margin-top: 120px;
         padding: 30px;
         border-radius: 18px;
         background: rgba(255,255,255,0.05);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        text-align: center;
     }
 
-    .features {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 20px;
-        font-size: 12px;
+    .title {
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .subtitle {
         color: #94a3b8;
+        font-size: 14px;
+        margin-bottom: 25px;
     }
 
-    .feature-pill {
-        padding: 6px 12px;
-        border-radius: 20px;
-        background: rgba(255,255,255,0.05);
+    /* FIX INPUT WIDTH */
+    .stTextInput {
+        width: 100% !important;
     }
 
     .stTextInput input {
         border-radius: 12px !important;
         padding: 12px !important;
         background: rgba(255,255,255,0.08) !important;
-        border: 1px solid rgba(255,255,255,0.1) !important;
+        border: 1px solid rgba(255,255,255,0.15) !important;
     }
 
+    /* FIX BUTTON WIDTH */
     .stButton button {
         width: 100% !important;
         height: 45px;
@@ -190,22 +178,14 @@ if st.session_state.user_id is None:
         color: white;
         font-weight: 600;
         border: none;
-    }
-
-    .stButton button:hover {
-        box-shadow: 0 0 20px rgba(34,197,94,0.7);
-        transform: translateY(-1px);
+        margin-top: 10px;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="login-container">', unsafe_allow_html=True)
-
-    st.markdown('<div class="logo">📊 SheetHub</div>', unsafe_allow_html=True)
-    st.markdown('<div class="tagline">Clean Excel instantly • No formulas • No stress</div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
+    st.markdown('<div class="title">📊 SheetHub</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Clean Excel instantly • No formulas • No stress</div>', unsafe_allow_html=True)
 
     email = st.text_input("", placeholder="Enter your email")
 
@@ -216,9 +196,6 @@ if st.session_state.user_id is None:
             st.session_state.user_id = get_or_create_user(email)
             st.session_state.email = email
             st.rerun()
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
     # ✨ Feature highlights (THIS FIXES "EMPTY FEEL")
     st.markdown("""
     <div class="features">
