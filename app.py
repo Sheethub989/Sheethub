@@ -191,6 +191,8 @@ if st.session_state.user_id is None:
                 st.session_state.email = email
                 st.rerun()
 
+        st.markdown('</div>', unsafe_allow_html=True)
+
     st.stop()
 
 # ---------------- USER ----------------
