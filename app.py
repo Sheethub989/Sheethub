@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import io
+import streamlit as st
 import uuid
 
 # ---------------- CONFIG ----------------
@@ -29,15 +29,16 @@ from utils.ai_insights import generate_ai_insights
 st.set_page_config(page_title="SheetHub", layout="wide")
 init_db()
 
-# ---------------- 🎨 GLOBAL UI ----------------
+# ---------------- 🎨 ULTRA UI ----------------
 st.markdown("""
 <style>
 
 /* BACKGROUND */
 [data-testid="stAppViewContainer"] {
-    background: radial-gradient(circle at 20% 20%, #0ea5e9 0%, transparent 30%),
-                radial-gradient(circle at 80% 80%, #22c55e 0%, transparent 30%),
-                #020617;
+    background:
+    radial-gradient(circle at 20% 30%, rgba(14,165,233,0.25), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(34,197,94,0.25), transparent 40%),
+    #020617;
 }
 
 /* SIDEBAR */
@@ -45,13 +46,38 @@ st.markdown("""
     background: #020617;
 }
 
-/* CARDS */
-.card {
+/* GLASS CARD */
+.glass {
     background: rgba(255,255,255,0.05);
+    border-radius: 18px;
     padding: 25px;
-    border-radius: 16px;
+    backdrop-filter: blur(12px);
     margin-bottom: 20px;
-    backdrop-filter: blur(10px);
+}
+
+/* HERO */
+.hero {
+    text-align:center;
+    margin-top:20px;
+    margin-bottom:30px;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.hero p {
+    color: #94a3b8;
+}
+
+/* FEATURE PILLS */
+.pill {
+    display:inline-block;
+    padding:10px 20px;
+    border-radius:999px;
+    background: rgba(255,255,255,0.08);
+    margin:5px;
 }
 
 /* BUTTON */
@@ -59,24 +85,14 @@ st.markdown("""
     background: linear-gradient(90deg, #22c55e, #4ade80);
     color: black;
     border-radius: 10px;
-    padding: 10px;
     font-weight: bold;
 }
 
-/* INPUT */
-input {
-    border-radius: 10px !important;
-}
-
-/* TITLE */
-.title {
-    font-size: 2.2rem;
-    font-weight: bold;
-}
-
-/* SUBTEXT */
-.subtext {
-    color: #94a3b8;
+/* LOGIN CARD */
+.login {
+    max-width:400px;
+    margin:auto;
+    margin-top:100px;
 }
 
 </style>
@@ -86,44 +102,29 @@ input {
 st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
-# ---------------- 🔐 LOGIN (FIXED) ----------------
+# ---------------- LOGIN ----------------
 if st.session_state.user_id is None:
 
-    # APP TITLE
     st.markdown("""
-    <h1 style='text-align:center; margin-top:60px;'>📊 SheetHub</h1>
-    <p style='text-align:center; color:#94a3b8;'>Smart Excel Cleaner</p>
+    <div class="login glass">
+        <h2 style="text-align:center;">🔐 Login to SheetHub</h2>
+        <p style="text-align:center; color:#94a3b8;">Start cleaning Excel instantly</p>
+    </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1,2,1])
+    email = st.text_input("", placeholder="Enter your email")
 
+    col1, col2, col3 = st.columns([1,1,1])
     with col2:
+        login = st.button("🚀 Continue", use_container_width=True)
 
-        st.markdown("""
-        <div style="
-            background: rgba(255,255,255,0.05);
-            padding: 30px;
-            border-radius: 16px;
-            text-align: center;
-        ">
-            <h2>🔐 Login</h2>
-            <p style="color:#94a3b8;">Enter your email</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-        email = st.text_input("", placeholder="Enter your email")
-
-        c1, c2, c3 = st.columns([1,1,1])
-        with c2:
-            login = st.button("🚀 Continue", use_container_width=True)
-
-        if login:
-            if "@" not in email:
-                st.error("Enter valid email")
-            else:
-                st.session_state.user_id = get_or_create_user(email)
-                st.session_state.email = email
-                st.rerun()
+    if login:
+        if "@" not in email:
+            st.error("Enter valid email")
+        else:
+            st.session_state.user_id = get_or_create_user(email)
+            st.session_state.email = email
+            st.rerun()
 
     st.stop()
 
@@ -139,51 +140,44 @@ if st.sidebar.button("Logout"):
     st.session_state.clear()
     st.rerun()
 
-# PLAN
 st.sidebar.markdown("## 💳 Plan")
-if is_pro:
-    st.sidebar.success("PRO 🚀")
-else:
-    st.sidebar.info("Free plan")
+st.sidebar.info("PRO 🚀" if is_pro else "Free")
 
-# USAGE
 remaining = remaining_quota(user_id)
 used = FREE_DAILY_LIMIT - remaining
 
 if not is_pro:
     st.sidebar.progress(used / FREE_DAILY_LIMIT)
-    st.sidebar.caption(f"{remaining}/5 left today")
+    st.sidebar.caption(f"{remaining}/5 left")
 
-# HISTORY
-st.sidebar.markdown("## 🕓 File History")
-history = get_file_history(user_id)
-
-if not history:
-    st.sidebar.caption("No files yet")
-else:
-    for name, rows, cols, _ in history:
-        st.sidebar.write(f"📄 {name}")
-        st.sidebar.caption(f"{rows} rows • {cols} cols")
-
-# OPTIONS
-st.sidebar.markdown("## ⚙️ Cleaning Options")
-apply_standardize = st.sidebar.checkbox("Standardize columns", True)
-remove_summary = st.sidebar.checkbox("Remove summary rows", True)
+st.sidebar.markdown("## ⚙️ Cleaning")
+apply_standardize = st.sidebar.checkbox("Standardize", True)
+remove_summary = st.sidebar.checkbox("Remove summary", True)
 remove_dupes = st.sidebar.checkbox("Remove duplicates", True)
-drop_missing = st.sidebar.checkbox("Remove missing values", False)
+drop_missing = st.sidebar.checkbox("Remove missing", False)
 
-# ---------------- HEADER ----------------
-st.markdown('<div class="title">📊 SheetHub — Smart Excel Cleaner</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtext">Clean Excel data instantly. No formulas. No headaches.</div>', unsafe_allow_html=True)
+# ---------------- HERO ----------------
+st.markdown("""
+<div class="hero">
+<h1>📊 SheetHub</h1>
+<p>Clean Excel data instantly. No formulas. No headaches.</p>
+</div>
+""", unsafe_allow_html=True)
+
+# FEATURES
+st.markdown("""
+<div style="text-align:center;">
+<span class="pill">⚡ Fast Cleaning</span>
+<span class="pill">🤖 AI Insights</span>
+<span class="pill">📊 Smart Charts</span>
+</div>
+""", unsafe_allow_html=True)
 
 # ---------------- UPLOAD ----------------
-st.markdown('<div class="card">', unsafe_allow_html=True)
+st.markdown('<div class="glass">', unsafe_allow_html=True)
 
 st.markdown("### 📂 Upload Excel Files")
 files = st.file_uploader("", type=["xlsx"], accept_multiple_files=True)
-
-if not is_pro:
-    st.caption("Free: 5 files/day • PRO soon")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -213,23 +207,19 @@ if files:
         increment_usage(user_id)
 
         # SUMMARY
-        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.markdown('<div class="glass">', unsafe_allow_html=True)
         st.markdown("### 🧾 Summary")
-
         for sheet, df in cleaned.items():
             st.write(f"{sheet} → {len(df)} rows")
             save_file_history(user_id, file.name, len(df), df.shape[1])
-
         st.markdown('</div>', unsafe_allow_html=True)
 
         # AI
-        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.markdown('<div class="glass">', unsafe_allow_html=True)
         st.markdown("### 🤖 AI Insights")
-
         for sheet, df in cleaned.items():
             for insight in generate_ai_insights(df):
                 st.write("•", insight)
-
         st.markdown('</div>', unsafe_allow_html=True)
 
         # DOWNLOAD
