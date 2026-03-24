@@ -119,12 +119,11 @@ st.markdown("""
 st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
-# ---------------- FINAL CLEAN LOGIN ----------------
+# ---------------- CLEAN PREMIUM LOGIN ----------------
 if st.session_state.user_id is None:
 
     st.markdown("""
     <style>
-
     .stApp {
         background:
         radial-gradient(circle at 20% 20%, rgba(14,165,233,0.15), transparent 40%),
@@ -132,73 +131,67 @@ if st.session_state.user_id is None:
         #020617;
     }
 
-    /* CENTER CONTAINER */
-    .center-box {
-        max-width: 420px;
-        margin: auto;
-        margin-top: 120px;
-        padding: 30px;
-        border-radius: 18px;
-        background: rgba(255,255,255,0.05);
+    .login-card {
+        padding: 40px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.04);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         text-align: center;
     }
 
     .title {
         font-size: 28px;
-        font-weight: 700;
+        font-weight: 600;
+        margin-bottom: 5px;
     }
 
-    .subtitle {
-        color: #94a3b8;
+    .sub {
         font-size: 14px;
+        color: #94a3b8;
         margin-bottom: 25px;
-    }
-
-    /* FIX INPUT WIDTH */
-    .stTextInput {
-        width: 100% !important;
     }
 
     .stTextInput input {
         border-radius: 12px !important;
         padding: 12px !important;
         background: rgba(255,255,255,0.08) !important;
-        border: 1px solid rgba(255,255,255,0.15) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
     }
 
-    /* FIX BUTTON WIDTH */
     .stButton button {
         width: 100% !important;
         height: 45px;
         border-radius: 12px;
-        background: linear-gradient(135deg, #22c55e, #16a34a);
-        color: white;
         font-weight: 600;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
         border: none;
-        margin-top: 10px;
+        color: white;
     }
-
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="center-box">', unsafe_allow_html=True)
+    # CENTER USING COLUMNS (THIS FIXES EVERYTHING)
+    left, center, right = st.columns([1, 1.2, 1])
 
-    st.markdown('<div class="title">📊 SheetHub</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle">Clean Excel instantly • No formulas • No stress</div>', unsafe_allow_html=True)
+    with center:
+        
 
-    email = st.text_input("", placeholder="Enter your email")
+        st.markdown('<div class="title">📊 SheetHub</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sub">Clean Excel instantly</div>', unsafe_allow_html=True)
 
-    if st.button("🚀 Continue"):
-        if "@" not in email:
-            st.error("Enter valid email")
-        else:
-            st.session_state.user_id = get_or_create_user(email)
-            st.session_state.email = email
-            st.rerun()
+        email = st.text_input("", placeholder="Enter your email")
 
-    st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("🚀 Continue"):
+            if "@" not in email:
+                st.error("Enter valid email")
+            else:
+                st.session_state.user_id = get_or_create_user(email)
+                st.session_state.email = email
+                st.rerun()
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
     st.stop()
 # ---------------- USER ----------------
