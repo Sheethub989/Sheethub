@@ -119,104 +119,116 @@ st.markdown("""
 st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
-# ---------------- ULTRA PREMIUM LOGIN ----------------
+# ---------------- PREMIUM LOGIN FIX ----------------
 if st.session_state.user_id is None:
 
     st.markdown("""
     <style>
 
-    /* 🌌 Animated Gradient Background */
     .stApp {
-        background: linear-gradient(-45deg, #020617, #020617, #0ea5e9, #22c55e);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
+        background:
+        radial-gradient(circle at 20% 20%, rgba(14,165,233,0.15), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(34,197,94,0.15), transparent 40%),
+        #020617;
     }
 
-    @keyframes gradientBG {
-        0% {background-position: 0% 50%;}
-        50% {background-position: 100% 50%;}
-        100% {background-position: 0% 50%;}
+    .login-container {
+        text-align: center;
+        padding-top: 80px;
     }
 
-    /* 🧊 Glass Card */
+    .logo {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .tagline {
+        color: #94a3b8;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+
     .login-card {
-        padding: 40px;
+        max-width: 400px;
+        margin: auto;
+        padding: 30px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+
+    .features {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #94a3b8;
+    }
+
+    .feature-pill {
+        padding: 6px 12px;
         border-radius: 20px;
         background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(25px);
-        border: 1px solid rgba(255,255,255,0.1);
-        box-shadow: 0 25px 80px rgba(0,0,0,0.6);
-        text-align: center;
-        animation: fadeIn 1s ease;
     }
 
-    @keyframes fadeIn {
-        from {opacity:0; transform: translateY(20px);}
-        to {opacity:1; transform: translateY(0);}
-    }
-
-    /* 🧠 Title */
-    .title {
-        font-size: 30px;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-
-    .sub {
-        font-size: 14px;
-        color: #94a3b8;
-        margin-bottom: 25px;
-    }
-
-    /* ✨ Input */
     .stTextInput input {
         border-radius: 12px !important;
-        padding: 14px !important;
+        padding: 12px !important;
         background: rgba(255,255,255,0.08) !important;
-        border: 1px solid rgba(255,255,255,0.15) !important;
-        color: white !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
     }
 
-    /* 🚀 Glowing Button */
     .stButton button {
         width: 100% !important;
-        height: 48px;
+        height: 45px;
         border-radius: 12px;
-        font-weight: 600;
         background: linear-gradient(135deg, #22c55e, #16a34a);
-        border: none;
         color: white;
-        transition: 0.3s;
-        box-shadow: 0 0 0px rgba(34,197,94,0.0);
+        font-weight: 600;
+        border: none;
     }
 
     .stButton button:hover {
-        box-shadow: 0 0 20px rgba(34,197,94,0.8);
-        transform: translateY(-2px);
+        box-shadow: 0 0 20px rgba(34,197,94,0.7);
+        transform: translateY(-1px);
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    # 🎯 CENTER PERFECTLY
-    left, center, right = st.columns([1, 1.2, 1])
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
-    with center:
+    st.markdown('<div class="logo">📊 SheetHub</div>', unsafe_allow_html=True)
+    st.markdown('<div class="tagline">Clean Excel instantly • No formulas • No stress</div>', unsafe_allow_html=True)
 
-        st.markdown('<div class="title">📊 SheetHub</div>', unsafe_allow_html=True)
-        st.markdown('<div class="sub">Clean Excel instantly • No formulas • No stress</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-        email = st.text_input("", placeholder="Enter your email")
+    email = st.text_input("", placeholder="Enter your email")
 
-        if st.button("🚀 Continue"):
-            if "@" not in email:
-                st.error("Enter valid email")
-            else:
-                st.session_state.user_id = get_or_create_user(email)
-                st.session_state.email = email
-                st.rerun()
+    if st.button("🚀 Continue"):
+        if "@" not in email:
+            st.error("Enter valid email")
+        else:
+            st.session_state.user_id = get_or_create_user(email)
+            st.session_state.email = email
+            st.rerun()
 
-        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # ✨ Feature highlights (THIS FIXES "EMPTY FEEL")
+    st.markdown("""
+    <div class="features">
+        <div class="feature-pill">⚡ Fast Cleaning</div>
+        <div class="feature-pill">🤖 AI Insights</div>
+        <div class="feature-pill">📊 Smart Charts</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.stop()
 # ---------------- USER ----------------
