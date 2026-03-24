@@ -176,7 +176,6 @@ if st.session_state.user_id is None:
     left, center, right = st.columns([1, 1.2, 1])
 
     with center:
-        st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
         st.markdown('<div class="title">📊 SheetHub</div>', unsafe_allow_html=True)
         st.markdown('<div class="sub">Clean Excel instantly</div>', unsafe_allow_html=True)
