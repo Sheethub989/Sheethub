@@ -119,7 +119,6 @@ st.markdown("""
 st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
-# ---------------- PREMIUM LOGIN FIX ----------------
 # ---------------- FINAL CLEAN LOGIN ----------------
 if st.session_state.user_id is None:
 
@@ -184,6 +183,8 @@ if st.session_state.user_id is None:
     </style>
     """, unsafe_allow_html=True)
 
+    st.markdown('<div class="center-box">', unsafe_allow_html=True)
+
     st.markdown('<div class="title">📊 SheetHub</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitle">Clean Excel instantly • No formulas • No stress</div>', unsafe_allow_html=True)
 
@@ -196,14 +197,6 @@ if st.session_state.user_id is None:
             st.session_state.user_id = get_or_create_user(email)
             st.session_state.email = email
             st.rerun()
-    # ✨ Feature highlights (THIS FIXES "EMPTY FEEL")
-    st.markdown("""
-    <div class="features">
-        <div class="feature-pill">⚡ Fast Cleaning</div>
-        <div class="feature-pill">🤖 AI Insights</div>
-        <div class="feature-pill">📊 Smart Charts</div>
-    </div>
-    """, unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
