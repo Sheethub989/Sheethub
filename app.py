@@ -119,31 +119,46 @@ st.markdown("""
 st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
-# ---------------- CLEAN PREMIUM LOGIN ----------------
+# ---------------- ULTRA PREMIUM LOGIN ----------------
 if st.session_state.user_id is None:
 
     st.markdown("""
     <style>
+
+    /* 🌌 Animated Gradient Background */
     .stApp {
-        background:
-        radial-gradient(circle at 20% 20%, rgba(14,165,233,0.15), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(34,197,94,0.15), transparent 40%),
-        #020617;
+        background: linear-gradient(-45deg, #020617, #020617, #0ea5e9, #22c55e);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
     }
 
+    @keyframes gradientBG {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+
+    /* 🧊 Glass Card */
     .login-card {
         padding: 40px;
         border-radius: 20px;
-        background: rgba(255,255,255,0.04);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 25px 80px rgba(0,0,0,0.6);
         text-align: center;
+        animation: fadeIn 1s ease;
     }
 
+    @keyframes fadeIn {
+        from {opacity:0; transform: translateY(20px);}
+        to {opacity:1; transform: translateY(0);}
+    }
+
+    /* 🧠 Title */
     .title {
-        font-size: 28px;
-        font-weight: 600;
+        font-size: 30px;
+        font-weight: 700;
         margin-bottom: 5px;
     }
 
@@ -153,32 +168,43 @@ if st.session_state.user_id is None:
         margin-bottom: 25px;
     }
 
+    /* ✨ Input */
     .stTextInput input {
         border-radius: 12px !important;
-        padding: 12px !important;
+        padding: 14px !important;
         background: rgba(255,255,255,0.08) !important;
-        border: 1px solid rgba(255,255,255,0.1) !important;
+        border: 1px solid rgba(255,255,255,0.15) !important;
+        color: white !important;
     }
 
+    /* 🚀 Glowing Button */
     .stButton button {
         width: 100% !important;
-        height: 45px;
+        height: 48px;
         border-radius: 12px;
         font-weight: 600;
         background: linear-gradient(135deg, #22c55e, #16a34a);
         border: none;
         color: white;
+        transition: 0.3s;
+        box-shadow: 0 0 0px rgba(34,197,94,0.0);
     }
+
+    .stButton button:hover {
+        box-shadow: 0 0 20px rgba(34,197,94,0.8);
+        transform: translateY(-2px);
+    }
+
     </style>
     """, unsafe_allow_html=True)
 
-    # CENTER USING COLUMNS (THIS FIXES EVERYTHING)
+    # 🎯 CENTER PERFECTLY
     left, center, right = st.columns([1, 1.2, 1])
 
     with center:
 
         st.markdown('<div class="title">📊 SheetHub</div>', unsafe_allow_html=True)
-        st.markdown('<div class="sub">Clean Excel instantly</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sub">Clean Excel instantly • No formulas • No stress</div>', unsafe_allow_html=True)
 
         email = st.text_input("", placeholder="Enter your email")
 
@@ -193,7 +219,6 @@ if st.session_state.user_id is None:
         st.markdown('</div>', unsafe_allow_html=True)
 
     st.stop()
-
 # ---------------- USER ----------------
 user_id = st.session_state.user_id
 is_pro = get_user_plan(user_id) == "pro"
