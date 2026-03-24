@@ -125,82 +125,70 @@ if st.session_state.user_id is None:
     st.markdown("""
     <style>
 
-    /* BACKGROUND GLOW */
+    /* BACKGROUND */
     .stApp {
         background:
-        radial-gradient(circle at 20% 20%, rgba(14,165,233,0.25), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(34,197,94,0.25), transparent 40%),
+        radial-gradient(circle at 20% 20%, rgba(14,165,233,0.2), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(34,197,94,0.2), transparent 40%),
         #020617;
     }
 
-    /* CENTER WRAPPER */
-    .center-wrap {
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:90vh;
-    }
-
-    /* CARD */
-    .login-card {
-        width:360px;
-        padding:35px;
-        border-radius:20px;
-        background: rgba(255,255,255,0.06);
+    /* CENTER BLOCK */
+    .login-container {
+        max-width: 420px;
+        margin: 120px auto;
+        padding: 35px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.05);
         backdrop-filter: blur(18px);
         border: 1px solid rgba(255,255,255,0.08);
         box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        text-align:center;
+        text-align: center;
     }
 
-    /* LOGO */
-    .logo {
-        font-size:26px;
-        font-weight:600;
-        margin-bottom:6px;
+    /* TITLE */
+    .login-title {
+        font-size: 26px;
+        font-weight: 600;
+        margin-bottom: 5px;
     }
 
-    .subtitle {
-        color:#94a3b8;
-        font-size:14px;
-        margin-bottom:25px;
+    .login-sub {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-bottom: 25px;
     }
 
     /* INPUT FIX */
-    .stTextInput > div > div > input {
-        border-radius:12px !important;
-        padding:12px !important;
+    .stTextInput input {
+        border-radius: 12px !important;
+        padding: 12px !important;
         background: rgba(255,255,255,0.08) !important;
-        border:1px solid rgba(255,255,255,0.1) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
     }
 
     /* BUTTON FIX */
     .stButton button {
-        height:45px;
-        border-radius:12px;
-        font-weight:600;
+        width: 100% !important;
+        height: 45px;
+        border-radius: 12px;
+        font-weight: 600;
         background: linear-gradient(135deg, #22c55e, #16a34a);
-        border:none;
-        color:white;
-    }
-
-    .stButton button:hover {
-        transform: scale(1.03);
-        box-shadow: 0 10px 30px rgba(34,197,94,0.4);
+        border: none;
+        color: white;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="center-wrap">', unsafe_allow_html=True)
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
-    st.markdown('<div class="logo">📊 SheetHub</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle">Clean Excel instantly</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-title">📊 SheetHub</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-sub">Clean Excel instantly</div>', unsafe_allow_html=True)
 
     email = st.text_input("", placeholder="Enter your email")
 
-    if st.button("🚀 Continue", use_container_width=True):
+    if st.button("🚀 Continue"):
         if "@" not in email:
             st.error("Enter valid email")
         else:
@@ -208,7 +196,7 @@ if st.session_state.user_id is None:
             st.session_state.email = email
             st.rerun()
 
-    st.markdown("</div></div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     st.stop()
 
