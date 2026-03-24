@@ -119,47 +119,40 @@ st.markdown("""
 st.session_state.setdefault("user_id", None)
 st.session_state.setdefault("email", None)
 
-# ---------------- ULTRA PREMIUM LOGIN ----------------
+# ---------------- CLEAN PREMIUM LOGIN ----------------
 if st.session_state.user_id is None:
 
     st.markdown("""
     <style>
-
-    /* BACKGROUND */
     .stApp {
         background:
-        radial-gradient(circle at 20% 20%, rgba(14,165,233,0.2), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(34,197,94,0.2), transparent 40%),
+        radial-gradient(circle at 20% 20%, rgba(14,165,233,0.15), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(34,197,94,0.15), transparent 40%),
         #020617;
     }
 
-    /* CENTER BLOCK */
-    .login-container {
-        max-width: 420px;
-        margin: 120px auto;
-        padding: 35px;
-        border-radius: 18px;
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(18px);
+    .login-card {
+        padding: 40px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.04);
+        backdrop-filter: blur(20px);
         border: 1px solid rgba(255,255,255,0.08);
         box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         text-align: center;
     }
 
-    /* TITLE */
-    .login-title {
-        font-size: 26px;
+    .title {
+        font-size: 28px;
         font-weight: 600;
         margin-bottom: 5px;
     }
 
-    .login-sub {
+    .sub {
         font-size: 14px;
         color: #94a3b8;
         margin-bottom: 25px;
     }
 
-    /* INPUT FIX */
     .stTextInput input {
         border-radius: 12px !important;
         padding: 12px !important;
@@ -167,7 +160,6 @@ if st.session_state.user_id is None:
         border: 1px solid rgba(255,255,255,0.1) !important;
     }
 
-    /* BUTTON FIX */
     .stButton button {
         width: 100% !important;
         height: 45px;
@@ -177,26 +169,29 @@ if st.session_state.user_id is None:
         border: none;
         color: white;
     }
-
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="login-container">', unsafe_allow_html=True)
+    # CENTER USING COLUMNS (THIS FIXES EVERYTHING)
+    left, center, right = st.columns([1, 1.2, 1])
 
-    st.markdown('<div class="login-title">📊 SheetHub</div>', unsafe_allow_html=True)
-    st.markdown('<div class="login-sub">Clean Excel instantly</div>', unsafe_allow_html=True)
+    with center:
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-    email = st.text_input("", placeholder="Enter your email")
+        st.markdown('<div class="title">📊 SheetHub</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sub">Clean Excel instantly</div>', unsafe_allow_html=True)
 
-    if st.button("🚀 Continue"):
-        if "@" not in email:
-            st.error("Enter valid email")
-        else:
-            st.session_state.user_id = get_or_create_user(email)
-            st.session_state.email = email
-            st.rerun()
+        email = st.text_input("", placeholder="Enter your email")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+        if st.button("🚀 Continue"):
+            if "@" not in email:
+                st.error("Enter valid email")
+            else:
+                st.session_state.user_id = get_or_create_user(email)
+                st.session_state.email = email
+                st.rerun()
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
     st.stop()
 
