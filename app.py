@@ -368,87 +368,89 @@ if 'cleaned' in locals():
 
         # ---------------- AI INSIGHTS ----------------
 
-        st.markdown("## 🧠 AI Insights")
+st.markdown("## 🧠 AI Insights")
 
-        for sheet, df in cleaned.items():
+if 'cleaned' in locals():
 
-            st.markdown(f"### 📄 {sheet}")
+    for sheet, df in cleaned.items():
 
-            # ---------------- PREMIUM METRICS ----------------
+        st.markdown(f"### 📄 {sheet}")
 
-            total_rows = df.shape[0]
-            total_cols = df.shape[1]
-            missing_values = int(df.isnull().sum().sum())
-            duplicate_rows = int(df.duplicated().sum())
+        # ---------------- PREMIUM METRICS ----------------
 
-            c1, c2, c3, c4 = st.columns(4)
-            
-            metrics = [
-                ("📄 Rows", total_rows),
-                ("📊 Columns", total_cols),
-                ("⚠️ Missing", missing_values),
-                ("🔁 Duplicates", duplicate_rows),
-            ]
+        total_rows = df.shape[0]
+        total_cols = df.shape[1]
+        missing_values = int(df.isnull().sum().sum())
+        duplicate_rows = int(df.duplicated().sum())
 
-            for col, (title, value) in zip([c1, c2, c3, c4], metrics):
+        c1, c2, c3, c4 = st.columns(4)
 
-    with col:
-        st.markdown(f"""
-        <div style="
-            background: rgba(255,255,255,0.05);
-            padding: 22px;
-            border-radius: 18px;
-            border: 1px solid rgba(255,255,255,0.08);
-            backdrop-filter: blur(12px);
-            text-align:center;
-            box-shadow: 0 0 25px rgba(0,255,180,0.08);
-            margin-bottom:10px;
-        ">
-            <h4 style='margin:0;color:#9ca3af;font-size:15px'>
-                {title}
-            </h4>
+        metrics = [
+            ("📄 Rows", total_rows),
+            ("📊 Columns", total_cols),
+            ("⚠️ Missing", missing_values),
+            ("🔁 Duplicates", duplicate_rows),
+        ]
 
-            <h1 style='margin-top:10px;color:white;font-size:34px'>
-                {value}
-            </h1>
-        </div>
-        """, unsafe_allow_html=True)
+        for col, (title, value) in zip([c1, c2, c3, c4], metrics):
 
-# ---------------- PREMIUM CHART ----------------
+            with col:
 
-numeric_cols = df.select_dtypes(include="number").columns
+                st.markdown(f"""
+                <div style="
+                    background: rgba(255,255,255,0.05);
+                    padding: 22px;
+                    border-radius: 18px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    backdrop-filter: blur(12px);
+                    text-align:center;
+                    box-shadow: 0 0 25px rgba(0,255,180,0.08);
+                    margin-bottom:10px;
+                ">
+                    <h4 style='margin:0;color:#9ca3af;font-size:15px'>
+                        {title}
+                    </h4>
 
-if len(numeric_cols) > 0:
+                    <h1 style='margin-top:10px;color:white;font-size:34px'>
+                        {value}
+                    </h1>
+                </div>
+                """, unsafe_allow_html=True)
 
-    chart_col = numeric_cols[-1]
+        # ---------------- PREMIUM CHART ----------------
 
-    fig = px.line(
-        df.head(50),
-        y=chart_col,
-        template="plotly_dark",
-        title=f"{chart_col} Trend Analysis"
-    )
+        numeric_cols = df.select_dtypes(include="number").columns
 
-    fig.update_layout(
-        paper_bgcolor="#07111f",
-        plot_bgcolor="#07111f",
-        font_color="white",
-        height=420,
-        bordercolor="#1f2937"
-    )
+        if len(numeric_cols) > 0:
 
-    st.plotly_chart(fig, use_container_width=True)
+            chart_col = numeric_cols[-1]
 
-st.markdown("---")
+            fig = px.line(
+                df.head(50),
+                y=chart_col,
+                template="plotly_dark",
+                title=f"{chart_col} Trend Analysis"
+            )
 
-# ---------------- DATA PREVIEW ----------------
+            fig.update_layout(
+                paper_bgcolor="#07111f",
+                plot_bgcolor="#07111f",
+                font_color="white",
+                height=420
+            )
 
-st.markdown("### 👀 Data Preview")
+            st.plotly_chart(fig, use_container_width=True)
 
-st.dataframe(
-    df.head(),
-    use_container_width=True
-)
+        st.markdown("---")
+
+        # ---------------- DATA PREVIEW ----------------
+
+        st.markdown("### 👀 Data Preview")
+
+        st.dataframe(
+            df.head(),
+            use_container_width=True
+        )
 # ---------------- FOOTER ----------------
 st.markdown("""
 <div style="text-align:center; color:#64748b; margin-top:40px;">
