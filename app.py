@@ -339,8 +339,6 @@ for sheet, df in cleaned.items():
         file.name,
         total_rows,
         total_cols
-    )
-
 # ---------------- AI INSIGHTS ----------------
 st.markdown('<div class="glass">', unsafe_allow_html=True)
 
