@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import io
 import uuid
-
+import plotly.express as px
 # ---------------- CONFIG ----------------
 FREE_DAILY_LIMIT = 5
 
@@ -316,17 +316,39 @@ for sheet, df in cleaned.items():
         total_cols
     )
 
+# ---------------- AI INSIGHTS ----------------
+st.markdown('<div class="glass">', unsafe_allow_html=True)
+
+st.markdown("## 🤖 AI Insights")
+
+for sheet, df in cleaned.items():
+
+    insights = generate_ai_insights(df)
+
+    st.markdown(f"### 📄 {sheet}")
+
+    if insights:
+
+        for insight in insights:
+
+            st.markdown(f"""
+            <div style="
+                padding:14px;
+                border-radius:12px;
+                margin-bottom:10px;
+                background: rgba(255,255,255,0.05);
+                border-left: 4px solid #22c55e;
+            ">
+            {insight}
+            </div>
+            """, unsafe_allow_html=True)
+
+    else:
+        st.info("No AI insights generated.")
+
 st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="glass">', unsafe_allow_html=True)
-        st.markdown("### 🤖 AI Insights")
-        for sheet, df in cleaned.items():
-            for insight in generate_ai_insights(df):
-                st.write("•", insight)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        out = make_excel_bytes_from_sheets(cleaned)
-        st.download_button("⬇️ Download Cleaned File", out.getvalue(), f"cleaned_{file.name}")
+out = make_excel_bytes_from_sheets(cleaned)
+st.download_button("⬇️ Download Cleaned File", out.getvalue(), f"cleaned_{file.name}")
 
 # ---------------- FOOTER ----------------
 st.markdown("""
