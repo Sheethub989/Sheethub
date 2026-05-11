@@ -390,7 +390,7 @@ if 'cleaned' in locals():
                 ("🔁 Duplicates", duplicate_rows),
             ]
 
-for col, (title, value) in zip([c1, c2, c3, c4], metrics):
+            for col, (title, value) in zip([c1, c2, c3, c4], metrics):
 
     with col:
         st.markdown(f"""
