@@ -376,19 +376,19 @@ if 'cleaned' in locals():
 
             # ---------------- PREMIUM METRICS ----------------
 
-total_rows = df.shape[0]
-total_cols = df.shape[1]
-missing_values = int(df.isnull().sum().sum())
-duplicate_rows = int(df.duplicated().sum())
+            total_rows = df.shape[0]
+            total_cols = df.shape[1]
+            missing_values = int(df.isnull().sum().sum())
+            duplicate_rows = int(df.duplicated().sum())
 
-c1, c2, c3, c4 = st.columns(4)
-
-metrics = [
-    ("📄 Rows", total_rows),
-    ("📊 Columns", total_cols),
-    ("⚠️ Missing", missing_values),
-    ("🔁 Duplicates", duplicate_rows),
-]
+            c1, c2, c3, c4 = st.columns(4)
+            
+            metrics = [
+                ("📄 Rows", total_rows),
+                ("📊 Columns", total_cols),
+                ("⚠️ Missing", missing_values),
+                ("🔁 Duplicates", duplicate_rows),
+            ]
 
 for col, (title, value) in zip([c1, c2, c3, c4], metrics):
 
