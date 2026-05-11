@@ -342,38 +342,46 @@ if files:
                 total_cols
             )
 # ---------------- AI INSIGHTS ----------------
-st.markdown('<div class="glass">', unsafe_allow_html=True)
 
-st.markdown("## 🤖 AI Insights")
+st.markdown("## 🧠 AI Insights")
 
 for sheet, df in cleaned.items():
 
-    insights = generate_ai_insights(df)
-
     st.markdown(f"### 📄 {sheet}")
 
+    insights = []
+
+    # Missing values
+    missing = int(df.isnull().sum().sum())
+
+    if missing > 0:
+        insights.append(f"⚠️ Found {missing} missing values.")
+
+    # Duplicate rows
+    duplicates = int(df.duplicated().sum())
+
+    if duplicates > 0:
+        insights.append(f"🔁 Found {duplicates} duplicate rows.")
+
+    # Numeric columns
+    numeric_cols = df.select_dtypes(include="number").columns
+
+    if len(numeric_cols) > 0:
+
+        for col in numeric_cols[:3]:
+
+            avg = round(df[col].mean(), 2)
+
+            insights.append(f"📊 Average {col}: {avg}")
+
+    # Show insights
     if insights:
 
-        for insight in insights:
-
-            st.markdown(f"""
-            <div style="
-                padding:14px;
-                border-radius:12px;
-                margin-bottom:10px;
-                background: rgba(255,255,255,0.05);
-                border-left: 4px solid #22c55e;
-            ">
-            {insight}
-            </div>
-            """, unsafe_allow_html=True)
+        for item in insights:
+            st.success(item)
 
     else:
-        st.info("No AI insights generated.")
-
-st.markdown('</div>', unsafe_allow_html=True)
-out = make_excel_bytes_from_sheets(cleaned)
-st.download_button("⬇️ Download Cleaned File", out.getvalue(), f"cleaned_{file.name}")
+        st.info("✅ Dataset looks clean.")
 
 # ---------------- FOOTER ----------------
 st.markdown("""
