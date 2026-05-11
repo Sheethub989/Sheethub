@@ -277,19 +277,20 @@ if files:
 
         increment_usage(user_id)
 
-        # ---------------- ANALYTICS DASHBOARD ----------------
-st.markdown('<div class="glass">', unsafe_allow_html=True)
+# ---------------- ANALYTICS DASHBOARD ----------------
 
 st.markdown("## 📊 Analytics Dashboard")
 
 for sheet, df in cleaned.items():
 
-    total_rows = len(df)
+    st.markdown(f"### 📄 {sheet}")
+
+    total_rows = df.shape[0]
     total_cols = df.shape[1]
     missing_values = int(df.isnull().sum().sum())
     duplicate_rows = int(df.duplicated().sum())
 
-    # METRIC CARDS
+    # PREMIUM METRICS
     c1, c2, c3, c4 = st.columns(4)
 
     with c1:
@@ -306,7 +307,31 @@ for sheet, df in cleaned.items():
 
     st.markdown("---")
 
-    st.write(f"📄 Sheet: **{sheet}**")
+    # CHARTS
+    numeric_cols = df.select_dtypes(include="number").columns
+
+    if len(numeric_cols) > 0:
+
+        chart_col = numeric_cols[0]
+
+        fig = px.histogram(
+            df,
+            x=chart_col,
+            title=f"{chart_col} Distribution",
+            template="plotly_dark",
+        )
+
+        fig.update_layout(
+            paper_bgcolor="#0b1120",
+            plot_bgcolor="#0b1120",
+            font_color="white",
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    # PREVIEW
+    st.markdown("### 👀 Data Preview")
+    st.dataframe(df.head(), use_container_width=True)
 
     # SAVE HISTORY
     save_file_history(
