@@ -330,7 +330,7 @@ if files:
 
                 st.plotly_chart(fig, use_container_width=True)
 
-            # DATA PREVIEW
+                   # DATA PREVIEW
             st.markdown("### 👀 Data Preview")
             st.dataframe(df.head(), use_container_width=True)
 
@@ -341,48 +341,48 @@ if files:
                 total_rows,
                 total_cols
             )
-# ---------------- AI INSIGHTS ----------------
 
-st.markdown("## 🧠 AI Insights")
+        # ---------------- AI INSIGHTS ----------------
 
-for sheet, df in cleaned.items():
+        st.markdown("## 🧠 AI Insights")
 
-    st.markdown(f"### 📄 {sheet}")
+        for sheet, df in cleaned.items():
 
-    insights = []
+            st.markdown(f"### 📄 {sheet}")
 
-    # Missing values
-    missing = int(df.isnull().sum().sum())
+            insights = []
 
-    if missing > 0:
-        insights.append(f"⚠️ Found {missing} missing values.")
+            # Missing values
+            missing = int(df.isnull().sum().sum())
 
-    # Duplicate rows
-    duplicates = int(df.duplicated().sum())
+            if missing > 0:
+                insights.append(f"⚠️ Found {missing} missing values.")
 
-    if duplicates > 0:
-        insights.append(f"🔁 Found {duplicates} duplicate rows.")
+            # Duplicate rows
+            duplicates = int(df.duplicated().sum())
 
-    # Numeric columns
-    numeric_cols = df.select_dtypes(include="number").columns
+            if duplicates > 0:
+                insights.append(f"🔁 Found {duplicates} duplicate rows.")
 
-    if len(numeric_cols) > 0:
+            # Numeric columns
+            numeric_cols = df.select_dtypes(include="number").columns
 
-        for col in numeric_cols[:3]:
+            if len(numeric_cols) > 0:
 
-            avg = round(df[col].mean(), 2)
+                for col in numeric_cols[:3]:
 
-            insights.append(f"📊 Average {col}: {avg}")
+                    avg = round(df[col].mean(), 2)
 
-    # Show insights
-    if insights:
+                    insights.append(f"📊 Average {col}: {avg}")
 
-        for item in insights:
-            st.success(item)
+            # Show insights
+            if insights:
 
-    else:
-        st.info("✅ Dataset looks clean.")
+                for item in insights:
+                    st.success(item)
 
+            else:
+                st.info("✅ Dataset looks clean.")
 # ---------------- FOOTER ----------------
 st.markdown("""
 <div style="text-align:center; color:#64748b; margin-top:40px;">
