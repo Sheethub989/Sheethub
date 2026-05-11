@@ -277,12 +277,46 @@ if files:
 
         increment_usage(user_id)
 
-        st.markdown('<div class="glass">', unsafe_allow_html=True)
-        st.markdown("### 🧾 Summary")
-        for sheet, df in cleaned.items():
-            st.write(f"{sheet} → {len(df)} rows")
-            save_file_history(user_id, file.name, len(df), df.shape[1])
-        st.markdown('</div>', unsafe_allow_html=True)
+        # ---------------- ANALYTICS DASHBOARD ----------------
+st.markdown('<div class="glass">', unsafe_allow_html=True)
+
+st.markdown("## 📊 Analytics Dashboard")
+
+for sheet, df in cleaned.items():
+
+    total_rows = len(df)
+    total_cols = df.shape[1]
+    missing_values = int(df.isnull().sum().sum())
+    duplicate_rows = int(df.duplicated().sum())
+
+    # METRIC CARDS
+    c1, c2, c3, c4 = st.columns(4)
+
+    with c1:
+        st.metric("Rows", total_rows)
+
+    with c2:
+        st.metric("Columns", total_cols)
+
+    with c3:
+        st.metric("Missing", missing_values)
+
+    with c4:
+        st.metric("Duplicates", duplicate_rows)
+
+    st.markdown("---")
+
+    st.write(f"📄 Sheet: **{sheet}**")
+
+    # SAVE HISTORY
+    save_file_history(
+        user_id,
+        file.name,
+        total_rows,
+        total_cols
+    )
+
+st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown('<div class="glass">', unsafe_allow_html=True)
         st.markdown("### 🤖 AI Insights")
