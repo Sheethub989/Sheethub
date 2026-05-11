@@ -350,39 +350,81 @@ if files:
 
             st.markdown(f"### 📄 {sheet}")
 
-            insights = []
+            # ---------------- PREMIUM METRICS ----------------
 
-            # Missing values
-            missing = int(df.isnull().sum().sum())
+total_rows = df.shape[0]
+total_cols = df.shape[1]
+missing_values = int(df.isnull().sum().sum())
+duplicate_rows = int(df.duplicated().sum())
 
-            if missing > 0:
-                insights.append(f"⚠️ Found {missing} missing values.")
+c1, c2, c3, c4 = st.columns(4)
 
-            # Duplicate rows
-            duplicates = int(df.duplicated().sum())
+metrics = [
+    ("📄 Rows", total_rows),
+    ("📊 Columns", total_cols),
+    ("⚠️ Missing", missing_values),
+    ("🔁 Duplicates", duplicate_rows),
+]
 
-            if duplicates > 0:
-                insights.append(f"🔁 Found {duplicates} duplicate rows.")
+for col, (title, value) in zip([c1, c2, c3, c4], metrics):
 
-            # Numeric columns
-            numeric_cols = df.select_dtypes(include="number").columns
+    with col:
+        st.markdown(f"""
+        <div style="
+            background: rgba(255,255,255,0.05);
+            padding: 22px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            text-align:center;
+            box-shadow: 0 0 25px rgba(0,255,180,0.08);
+            margin-bottom:10px;
+        ">
+            <h4 style='margin:0;color:#9ca3af;font-size:15px'>
+                {title}
+            </h4>
 
-            if len(numeric_cols) > 0:
+            <h1 style='margin-top:10px;color:white;font-size:34px'>
+                {value}
+            </h1>
+        </div>
+        """, unsafe_allow_html=True)
 
-                for col in numeric_cols[:3]:
+# ---------------- PREMIUM CHART ----------------
 
-                    avg = round(df[col].mean(), 2)
+numeric_cols = df.select_dtypes(include="number").columns
 
-                    insights.append(f"📊 Average {col}: {avg}")
+if len(numeric_cols) > 0:
 
-            # Show insights
-            if insights:
+    chart_col = numeric_cols[-1]
 
-                for item in insights:
-                    st.success(item)
+    fig = px.line(
+        df.head(50),
+        y=chart_col,
+        template="plotly_dark",
+        title=f"{chart_col} Trend Analysis"
+    )
 
-            else:
-                st.info("✅ Dataset looks clean.")
+    fig.update_layout(
+        paper_bgcolor="#07111f",
+        plot_bgcolor="#07111f",
+        font_color="white",
+        height=420,
+        bordercolor="#1f2937"
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
+st.markdown("---")
+
+# ---------------- DATA PREVIEW ----------------
+
+st.markdown("### 👀 Data Preview")
+
+st.dataframe(
+    df.head(),
+    use_container_width=True
+)
 # ---------------- FOOTER ----------------
 st.markdown("""
 <div style="text-align:center; color:#64748b; margin-top:40px;">
