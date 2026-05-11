@@ -259,6 +259,7 @@ if not is_pro and remaining <= 0:
 
 # ---------------- PROCESS ----------------
 if files:
+
     for file in files:
 
         if not is_pro and not can_use(user_id):
@@ -277,68 +278,69 @@ if files:
 
         increment_usage(user_id)
 
-# ---------------- ANALYTICS DASHBOARD ----------------
+        # ---------------- ANALYTICS DASHBOARD ----------------
 
-st.markdown("## 📊 Analytics Dashboard")
+        st.markdown("## 📊 Analytics Dashboard")
 
-for sheet, df in cleaned.items():
+        for sheet, df in cleaned.items():
 
-    st.markdown(f"### 📄 {sheet}")
+            st.markdown(f"### 📄 {sheet}")
 
-    total_rows = df.shape[0]
-    total_cols = df.shape[1]
-    missing_values = int(df.isnull().sum().sum())
-    duplicate_rows = int(df.duplicated().sum())
+            total_rows = df.shape[0]
+            total_cols = df.shape[1]
+            missing_values = int(df.isnull().sum().sum())
+            duplicate_rows = int(df.duplicated().sum())
 
-    # PREMIUM METRICS
-    c1, c2, c3, c4 = st.columns(4)
+            # PREMIUM METRICS
+            c1, c2, c3, c4 = st.columns(4)
 
-    with c1:
-        st.metric("Rows", total_rows)
+            with c1:
+                st.metric("Rows", total_rows)
 
-    with c2:
-        st.metric("Columns", total_cols)
+            with c2:
+                st.metric("Columns", total_cols)
 
-    with c3:
-        st.metric("Missing", missing_values)
+            with c3:
+                st.metric("Missing", missing_values)
 
-    with c4:
-        st.metric("Duplicates", duplicate_rows)
+            with c4:
+                st.metric("Duplicates", duplicate_rows)
 
-    st.markdown("---")
+            st.markdown("---")
 
-    # CHARTS
-    numeric_cols = df.select_dtypes(include="number").columns
+            # CHARTS
+            numeric_cols = df.select_dtypes(include="number").columns
 
-    if len(numeric_cols) > 0:
+            if len(numeric_cols) > 0:
 
-        chart_col = numeric_cols[0]
+                chart_col = numeric_cols[0]
 
-        fig = px.histogram(
-            df,
-            x=chart_col,
-            title=f"{chart_col} Distribution",
-            template="plotly_dark",
-        )
+                fig = px.histogram(
+                    df,
+                    x=chart_col,
+                    title=f"{chart_col} Distribution",
+                    template="plotly_dark",
+                )
 
-        fig.update_layout(
-            paper_bgcolor="#0b1120",
-            plot_bgcolor="#0b1120",
-            font_color="white",
-        )
+                fig.update_layout(
+                    paper_bgcolor="#0b1120",
+                    plot_bgcolor="#0b1120",
+                    font_color="white",
+                )
 
-        st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, use_container_width=True)
 
-    # PREVIEW
-    st.markdown("### 👀 Data Preview")
-    st.dataframe(df.head(), use_container_width=True)
+            # DATA PREVIEW
+            st.markdown("### 👀 Data Preview")
+            st.dataframe(df.head(), use_container_width=True)
 
-    # SAVE HISTORY
-    save_file_history(
-        user_id,
-        file.name,
-        total_rows,
-        total_cols
+            # SAVE HISTORY
+            save_file_history(
+                user_id,
+                file.name,
+                total_rows,
+                total_cols
+            )
 # ---------------- AI INSIGHTS ----------------
 st.markdown('<div class="glass">', unsafe_allow_html=True)
 
