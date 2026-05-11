@@ -280,67 +280,91 @@ if files:
 
         # ---------------- ANALYTICS DASHBOARD ----------------
 
-        st.markdown("## 📊 Analytics Dashboard")
+st.markdown("## 📊 Analytics Dashboard")
 
-        for sheet, df in cleaned.items():
+if 'cleaned' in locals():
 
-            st.markdown(f"### 📄 {sheet}")
+    for sheet, df in cleaned.items():
 
-            total_rows = df.shape[0]
-            total_cols = df.shape[1]
-            missing_values = int(df.isnull().sum().sum())
-            duplicate_rows = int(df.duplicated().sum())
+        st.markdown(f"### 📄 {sheet}")
 
-            # PREMIUM METRICS
-            c1, c2, c3, c4 = st.columns(4)
+        # ---------------- METRICS ----------------
 
-            with c1:
-                st.metric("Rows", total_rows)
+        total_rows = df.shape[0]
+        total_cols = df.shape[1]
+        missing_values = int(df.isnull().sum().sum())
+        duplicate_rows = int(df.duplicated().sum())
 
-            with c2:
-                st.metric("Columns", total_cols)
+        c1, c2, c3, c4 = st.columns(4)
 
-            with c3:
-                st.metric("Missing", missing_values)
+        metrics = [
+            ("📄 Rows", total_rows),
+            ("📊 Columns", total_cols),
+            ("⚠️ Missing", missing_values),
+            ("🔁 Duplicates", duplicate_rows),
+        ]
 
-            with c4:
-                st.metric("Duplicates", duplicate_rows)
+        for col, (title, value) in zip([c1, c2, c3, c4], metrics):
 
-            st.markdown("---")
+            with col:
 
-            # CHARTS
-            numeric_cols = df.select_dtypes(include="number").columns
+                st.markdown(f"""
+                <div style="
+                    background: rgba(255,255,255,0.05);
+                    padding: 22px;
+                    border-radius: 18px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    text-align:center;
+                    box-shadow: 0 0 20px rgba(0,255,180,0.08);
+                ">
+                    <h4 style='color:#9ca3af'>{title}</h4>
+                    <h1 style='color:white'>{value}</h1>
+                </div>
+                """, unsafe_allow_html=True)
 
-            if len(numeric_cols) > 0:
+        st.markdown("")
 
-                chart_col = numeric_cols[0]
+        # ---------------- CHART ----------------
 
-                fig = px.histogram(
-                    df,
-                    x=chart_col,
-                    title=f"{chart_col} Distribution",
-                    template="plotly_dark",
-                )
+        numeric_cols = df.select_dtypes(include="number").columns
 
-                fig.update_layout(
-                    paper_bgcolor="#0b1120",
-                    plot_bgcolor="#0b1120",
-                    font_color="white",
-                )
+        if len(numeric_cols) > 0:
 
-                st.plotly_chart(fig, use_container_width=True)
+            chart_col = numeric_cols[0]
 
-                   # DATA PREVIEW
-            st.markdown("### 👀 Data Preview")
-            st.dataframe(df.head(), use_container_width=True)
-
-            # SAVE HISTORY
-            save_file_history(
-                user_id,
-                file.name,
-                total_rows,
-                total_cols
+            fig = px.line(
+                df.head(50),
+                y=chart_col,
+                template="plotly_dark",
+                title=f"{chart_col} Trend"
             )
+
+            fig.update_layout(
+                paper_bgcolor="#07111f",
+                plot_bgcolor="#07111f",
+                font_color="white",
+                height=400
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        # ---------------- DATA PREVIEW ----------------
+
+        st.markdown("### 👀 Data Preview")
+
+        st.dataframe(
+            df.head(),
+            use_container_width=True
+        )
+
+        # ---------------- SAVE HISTORY ----------------
+
+        save_file_history(
+            user_id,
+            file.name,
+            total_rows,
+            total_cols
+        )
 
         # ---------------- AI INSIGHTS ----------------
 
