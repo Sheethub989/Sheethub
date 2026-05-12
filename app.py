@@ -552,6 +552,82 @@ if 'cleaned' in locals():
         else:
 
             st.info("No numeric columns found.")
+            # ---------------- AI DATA SUMMARY ----------------
+
+st.markdown("## 🤖 AI Dataset Summary")
+
+if 'cleaned' in locals():
+
+    for sheet, df in cleaned.items():
+
+        st.markdown(f"### 📄 {sheet}")
+
+        total_rows = df.shape[0]
+        total_cols = df.shape[1]
+
+        missing_values = int(df.isnull().sum().sum())
+        duplicate_rows = int(df.duplicated().sum())
+
+        numeric_cols = df.select_dtypes(include="number").columns
+        text_cols = df.select_dtypes(include="object").columns
+
+        insights = []
+
+        # Dataset size
+        if total_rows > 5000:
+            insights.append("🚀 Large dataset detected. Performance optimization recommended.")
+        else:
+            insights.append("✅ Lightweight dataset detected.")
+
+        # Missing values
+        if missing_values > 0:
+            insights.append(f"⚠️ Dataset contains {missing_values} missing values.")
+        else:
+            insights.append("✅ No missing values found.")
+
+        # Duplicates
+        if duplicate_rows > 0:
+            insights.append(f"🔁 {duplicate_rows} duplicate rows detected.")
+        else:
+            insights.append("✅ No duplicate rows found.")
+
+        # Numeric analysis
+        if len(numeric_cols) > 0:
+
+            for col in numeric_cols[:3]:
+
+                avg = round(df[col].mean(), 2)
+                max_val = round(df[col].max(), 2)
+                min_val = round(df[col].min(), 2)
+
+                insights.append(
+                    f"📊 {col} → Avg: {avg} | Min: {min_val} | Max: {max_val}"
+                )
+
+        # Text analysis
+        if len(text_cols) > 0:
+            insights.append(
+                f"📝 Dataset contains {len(text_cols)} text columns."
+            )
+
+        # PREMIUM AI CARDS
+        for item in insights:
+
+            st.markdown(f"""
+            <div style="
+                background: rgba(255,255,255,0.04);
+                border: 1px solid rgba(255,255,255,0.06);
+                padding: 16px;
+                border-radius: 14px;
+                margin-bottom: 12px;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 0 20px rgba(0,255,180,0.04);
+                color: white;
+                font-size: 15px;
+            ">
+                {item}
+            </div>
+            """, unsafe_allow_html=True)
 
 
 # ---------------- FOOTER ----------------
