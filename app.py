@@ -529,7 +529,7 @@ if history:
         rows = item[2]
         cols = item[3]
 
-        st.markdown(f"""
+        card_html = f"""
         <div style="
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.08);
@@ -559,7 +559,9 @@ if history:
             </p>
 
         </div>
-        """, unsafe_allow_html=True)
+        """
+
+        st.markdown(card_html, unsafe_allow_html=True)
 
 else:
 
