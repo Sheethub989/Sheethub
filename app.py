@@ -295,7 +295,7 @@ if 'cleaned' in locals():
         missing_values = int(df.isnull().sum().sum())
         duplicate_rows = int(df.duplicated().sum())
 
-        c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3, c4 = st.columns([1,1,1,1]))
 
         metrics = [
             ("📄 Rows", total_rows),
@@ -343,7 +343,7 @@ if 'cleaned' in locals():
                 paper_bgcolor="#07111f",
                 plot_bgcolor="#07111f",
                 font_color="white",
-                height=400
+                height=600
             )
 
             st.plotly_chart(fig, use_container_width=True)
@@ -489,6 +489,13 @@ if 'cleaned' in locals():
             df.head(),
             use_container_width=True
         )
+
+st.download_button(
+    "⬇ Download Cleaned CSV",
+    df.to_csv(index=False),
+    file_name=f"{sheet}_cleaned.csv",
+    mime="text/csv"
+)
 # ---------------- FOOTER ----------------
 st.markdown("""
 <div style="text-align:center; color:#64748b; margin-top:40px;">
