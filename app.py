@@ -363,7 +363,73 @@ if 'cleaned' in locals():
             file_name=f"{sheet}_cleaned.csv",
             mime="text/csv"
         )
+# ---------------- SEARCH & FILTER ----------------
 
+st.markdown("## 🔍 Search & Filter")
+
+if 'cleaned' in locals():
+
+    for sheet, df in cleaned.items():
+
+        st.markdown(f"### 📄 {sheet}")
+
+        search = st.text_input(
+            f"Search in {sheet}",
+            key=f"search_{sheet}"
+        )
+
+        filtered_df = df.copy()
+
+        # -------- SEARCH --------
+
+        if search:
+
+            filtered_df = filtered_df[
+                filtered_df.astype(str)
+                .apply(
+                    lambda row: row.str.contains(
+                        search,
+                        case=False,
+                        na=False
+                    ).any(),
+                    axis=1
+                )
+            ]
+
+        # -------- COLUMN FILTER --------
+
+        column_filter = st.selectbox(
+            f"Filter Column ({sheet})",
+            ["None"] + list(df.columns),
+            key=f"filter_col_{sheet}"
+        )
+
+        if column_filter != "None":
+
+            unique_values = df[column_filter].dropna().unique()
+
+            selected_value = st.selectbox(
+                f"Select Value ({column_filter})",
+                unique_values,
+                key=f"value_{sheet}"
+            )
+
+            filtered_df = filtered_df[
+                filtered_df[column_filter] == selected_value
+            ]
+
+        st.dataframe(
+            filtered_df,
+            use_container_width=True,
+            height=350
+        )
+
+        st.markdown(
+            f"✅ Showing {filtered_df.shape[0]} rows"
+        )
+
+else:
+    st.info("Upload and clean a file first.")
         # ---------------- SAVE HISTORY ----------------
 
         save_file_history(
