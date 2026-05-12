@@ -533,23 +533,13 @@ if history:
                 padding: 18px;
                 border-radius: 16px;
                 margin-bottom: 12px;
-                backdrop-filter: blur(10px);
-                box-shadow: 0 0 20px rgba(0,255,180,0.04);
             ">
 
-                <h4 style="
-                    margin:0;
-                    color:white;
-                    font-size:18px;
-                ">
+                <h4 style="margin:0;color:white;font-size:18px;">
                     📄 {item[0]}
                 </h4>
 
-                <p style="
-                    color:#94a3b8;
-                    margin-top:8px;
-                    font-size:14px;
-                ">
+                <p style="color:#94a3b8;margin-top:8px;font-size:14px;">
                     📊 Rows: {item[1]}
                     &nbsp;&nbsp;&nbsp;
                     📁 Columns: {item[2]}
