@@ -525,6 +525,7 @@ if history:
 
     for item in history:
 
+        # DATABASE VALUES
         filename = item[1]
         rows = item[2]
         cols = item[3]
