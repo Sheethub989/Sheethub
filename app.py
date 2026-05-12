@@ -432,12 +432,12 @@ else:
     st.info("Upload and clean a file first.")
         # ---------------- SAVE HISTORY ----------------
 
-        save_file_history(
-            user_id,
-            file.name,
-            total_rows,
-            total_cols
-        )
+save_file_history(
+    user_id,
+    file.name,
+     total_rows,
+     total_cols
+)
        # ---------------- SMART CHARTS ----------------
 
 st.markdown("## 📈 Smart Charts")
