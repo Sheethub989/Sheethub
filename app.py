@@ -523,36 +523,44 @@ history = get_file_history(user_id)
 
 if history:
 
-    for item in reversed(history):
+    for item in history:
 
-        st.markdown(
-            f"""
-            <div style="
-                background: rgba(255,255,255,0.04);
-                border: 1px solid rgba(255,255,255,0.08);
-                padding: 18px;
-                border-radius: 16px;
-                margin-bottom: 12px;
+        filename = item[1]
+        rows = item[2]
+        cols = item[3]
+
+        st.markdown(f"""
+        <div style="
+            background: rgba(255,255,255,0.04);
+            padding:20px;
+            border-radius:18px;
+            border:1px solid rgba(255,255,255,0.08);
+            margin-bottom:18px;
+        ">
+
+            <h4 style="
+                margin:0;
+                color:white;
+                font-size:18px;
             ">
+                📄 {filename}
+            </h4>
 
-                <h4 style="margin:0;color:white;font-size:18px;">
-                    📄 {item[0]}
-                </h4>
+            <p style="
+                color:#94a3b8;
+                margin-top:8px;
+                font-size:14px;
+            ">
+                📊 Rows: {rows}
+                &nbsp;&nbsp;&nbsp;
+                📁 Columns: {cols}
+            </p>
 
-                <p style="color:#94a3b8;margin-top:8px;font-size:14px;">
-                    📊 Rows: {item[1]}
-                    &nbsp;&nbsp;&nbsp;
-                    📁 Columns: {item[2]}
-                </p>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        </div>
+        """, unsafe_allow_html=True)
 
 else:
-
-    st.info("No file history yet.")
+    st.info("No file history found.")
 # ---------------- FOOTER ----------------
 st.markdown("""
 <div style="text-align:center; color:#64748b; margin-top:40px;">
