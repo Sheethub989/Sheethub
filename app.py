@@ -525,6 +525,10 @@ if history:
 
     for item in reversed(history):
 
+        filename = item[1]
+        rows = item[2]
+        cols = item[3]
+
         st.markdown(f"""
         <div style="
             background: rgba(255,255,255,0.04);
@@ -541,7 +545,7 @@ if history:
                 color:white;
                 font-size:18px;
             ">
-                📄 {item[1]}
+                📄 {filename}
             </h4>
 
             <p style="
@@ -549,16 +553,9 @@ if history:
                 margin-top:8px;
                 font-size:14px;
             ">
-                📊 Rows: {item[2]} &nbsp;&nbsp;&nbsp;
-                📁 Columns: {item[3]}
-            </p>
-
-            <p style="
-                color:#64748b;
-                font-size:13px;
-                margin-top:5px;
-            ">
-                🕒 Uploaded: {item[4]}
+                📊 Rows: {rows}
+                &nbsp;&nbsp;&nbsp;
+                📁 Columns: {cols}
             </p>
 
         </div>
