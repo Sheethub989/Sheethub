@@ -356,6 +356,12 @@ if 'cleaned' in locals():
             df.head(),
             use_container_width=True
         )
+        st.download_button(
+            "⬇ Download Cleaned CSV",
+            df.to_csv(index=False),
+            file_name=f"{sheet}_cleaned.csv",
+            mime="text/csv"
+        )
 
         # ---------------- SAVE HISTORY ----------------
 
@@ -490,12 +496,6 @@ if 'cleaned' in locals():
             use_container_width=True
         )
 
-st.download_button(
-    "⬇ Download Cleaned CSV",
-    df.to_csv(index=False),
-    file_name=f"{sheet}_cleaned.csv",
-    mime="text/csv"
-)
 # ---------------- FOOTER ----------------
 st.markdown("""
 <div style="text-align:center; color:#64748b; margin-top:40px;">
