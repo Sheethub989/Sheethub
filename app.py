@@ -295,7 +295,7 @@ if 'cleaned' in locals():
         missing_values = int(df.isnull().sum().sum())
         duplicate_rows = int(df.duplicated().sum())
 
-        c1, c2, c3, c4 = st.columns([1,1,1,1]))
+        c1, c2, c3, c4 = st.columns([1,1,1,1])
 
         metrics = [
             ("📄 Rows", total_rows),
