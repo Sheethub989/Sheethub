@@ -372,110 +372,114 @@ if 'cleaned' in locals():
             total_rows,
             total_cols
         )
-        # ---------------- SMART CHARTS ----------------
+       # ---------------- SMART CHARTS ----------------
 
 st.markdown("## 📈 Smart Charts")
 
-for sheet, df in cleaned.items():
+if 'cleaned' in locals():
 
-    st.markdown(f"### 📄 {sheet}")
+    for sheet, df in cleaned.items():
 
-    numeric_cols = df.select_dtypes(include="number").columns.tolist()
+        st.markdown(f"### 📄 {sheet}")
 
-    if len(numeric_cols) > 0:
+        numeric_cols = df.select_dtypes(include="number").columns.tolist()
 
-        col1, col2 = st.columns(2)
+        if len(numeric_cols) > 0:
 
-        with col1:
-            selected_col = st.selectbox(
-                f"Select Numeric Column ({sheet})",
-                numeric_cols,
-                key=f"col_{sheet}"
+            col1, col2 = st.columns(2)
+
+            with col1:
+                selected_col = st.selectbox(
+                    f"Select Numeric Column ({sheet})",
+                    numeric_cols,
+                    key=f"col_{sheet}"
+                )
+
+            with col2:
+                chart_type = st.selectbox(
+                    f"Select Chart Type ({sheet})",
+                    ["Line", "Bar", "Histogram", "Scatter", "Pie"],
+                    key=f"chart_{sheet}"
+                )
+
+            # -------- LINE --------
+
+            if chart_type == "Line":
+
+                fig = px.line(
+                    df.head(100),
+                    y=selected_col,
+                    template="plotly_dark",
+                    title=f"{selected_col} Line Chart"
+                )
+
+            # -------- BAR --------
+
+            elif chart_type == "Bar":
+
+                fig = px.bar(
+                    df.head(30),
+                    y=selected_col,
+                    template="plotly_dark",
+                    title=f"{selected_col} Bar Chart"
+                )
+
+            # -------- HISTOGRAM --------
+
+            elif chart_type == "Histogram":
+
+                fig = px.histogram(
+                    df,
+                    x=selected_col,
+                    template="plotly_dark",
+                    title=f"{selected_col} Distribution"
+                )
+
+            # -------- SCATTER --------
+
+            elif chart_type == "Scatter":
+
+                second_col = st.selectbox(
+                    f"Select Second Column ({sheet})",
+                    numeric_cols,
+                    key=f"scatter_{sheet}"
+                )
+
+                fig = px.scatter(
+                    df.head(100),
+                    x=selected_col,
+                    y=second_col,
+                    template="plotly_dark",
+                    title=f"{selected_col} vs {second_col}"
+                )
+
+            # -------- PIE --------
+
+            elif chart_type == "Pie":
+
+                value_counts = df[selected_col].value_counts().head(10)
+
+                fig = px.pie(
+                    values=value_counts.values,
+                    names=value_counts.index,
+                    template="plotly_dark",
+                    title=f"{selected_col} Pie Chart"
+                )
+
+            fig.update_layout(
+                paper_bgcolor="#07111f",
+                plot_bgcolor="#07111f",
+                font_color="white",
+                height=500
             )
 
-        with col2:
-            chart_type = st.selectbox(
-                f"Select Chart Type ({sheet})",
-                ["Line", "Bar", "Histogram", "Scatter", "Pie"],
-                key=f"chart_{sheet}"
-            )
+            st.plotly_chart(fig, use_container_width=True)
 
-        # -------- LINE CHART --------
+        else:
+            st.info("No numeric columns found.")
 
-        if chart_type == "Line":
-
-            fig = px.line(
-                df.head(100),
-                y=selected_col,
-                template="plotly_dark",
-                title=f"{selected_col} Line Chart"
-            )
-
-        # -------- BAR CHART --------
-
-        elif chart_type == "Bar":
-
-            fig = px.bar(
-                df.head(30),
-                y=selected_col,
-                template="plotly_dark",
-                title=f"{selected_col} Bar Chart"
-            )
-
-        # -------- HISTOGRAM --------
-
-        elif chart_type == "Histogram":
-
-            fig = px.histogram(
-                df,
-                x=selected_col,
-                template="plotly_dark",
-                title=f"{selected_col} Distribution"
-            )
-
-        # -------- SCATTER --------
-
-        elif chart_type == "Scatter":
-
-            second_col = st.selectbox(
-                f"Select Second Column ({sheet})",
-                numeric_cols,
-                key=f"scatter_{sheet}"
-            )
-
-            fig = px.scatter(
-                df.head(100),
-                x=selected_col,
-                y=second_col,
-                template="plotly_dark",
-                title=f"{selected_col} vs {second_col}"
-            )
-
-        # -------- PIE CHART --------
-
-        elif chart_type == "Pie":
-
-            value_counts = df[selected_col].value_counts().head(10)
-
-            fig = px.pie(
-                values=value_counts.values,
-                names=value_counts.index,
-                template="plotly_dark",
-                title=f"{selected_col} Pie Chart"
-            )
-
-        fig.update_layout(
-            paper_bgcolor="#07111f",
-            plot_bgcolor="#07111f",
-            font_color="white",
-            height=500
-        )
-
-        st.plotly_chart(fig, use_container_width=True)
-
-    else:
-
-        st.info("No numeric columns found.")
+else:
+    st.info("Upload and clean a file first.")
             # ---------------- AI DATA SUMMARY ----------------
 
 st.markdown("## 🤖 AI Dataset Summary")
