@@ -430,6 +430,19 @@ if 'cleaned' in locals():
 
 else:
     st.info("Upload and clean a file first.")
+    # ---------------- SAVE HISTORY ----------------
+
+if uploaded_file is not None:
+
+    try:
+        save_file_history(
+            user_id,
+            uploaded_file.name,
+            total_rows,
+            total_cols
+        )
+    except:
+        pass
 
        # ---------------- SMART CHARTS ----------------
 
