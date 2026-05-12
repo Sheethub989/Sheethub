@@ -530,34 +530,34 @@ if history:
         cols = item[3]
 
         card_html = f"""
-        <div style="
-            background: rgba(255,255,255,0.04);
-            padding:20px;
-            border-radius:18px;
-            border:1px solid rgba(255,255,255,0.08);
-            margin-bottom:18px;
-        ">
+<div style="
+    background: rgba(255,255,255,0.04);
+    padding:20px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.08);
+    margin-bottom:18px;
+">
 
-            <h4 style="
-                margin:0;
-                color:white;
-                font-size:18px;
-            ">
-                📄 {filename}
-            </h4>
+<h4 style="
+    margin:0;
+    color:white;
+    font-size:18px;
+">
+📄 {filename}
+</h4>
 
-            <p style="
-                color:#94a3b8;
-                margin-top:8px;
-                font-size:14px;
-            ">
-                📊 Rows: {rows}
-                &nbsp;&nbsp;&nbsp;
-                📁 Columns: {cols}
-            </p>
+<p style="
+    color:#94a3b8;
+    margin-top:8px;
+    font-size:14px;
+">
+📊 Rows: {rows}
+&nbsp;&nbsp;&nbsp;
+📁 Columns: {cols}
+</p>
 
-        </div>
-        """
+</div>
+"""
 
         st.markdown(card_html, unsafe_allow_html=True)
 
