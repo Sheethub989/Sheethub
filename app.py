@@ -376,68 +376,106 @@ if 'cleaned' in locals():
 
 st.markdown("## 📈 Smart Charts")
 
-if 'cleaned' in locals():
+for sheet, df in cleaned.items():
 
-    for sheet, df in cleaned.items():
+    st.markdown(f"### 📄 {sheet}")
 
-        st.markdown(f"### 📄 {sheet}")
+    numeric_cols = df.select_dtypes(include="number").columns.tolist()
 
-        numeric_cols = df.select_dtypes(include="number").columns
+    if len(numeric_cols) > 0:
 
-        if len(numeric_cols) > 0:
+        col1, col2 = st.columns(2)
 
+        with col1:
             selected_col = st.selectbox(
-                f"Select column for {sheet}",
+                f"Select Numeric Column ({sheet})",
                 numeric_cols,
-                key=sheet
+                key=f"col_{sheet}"
             )
 
-            chart_type = st.radio(
-                "Chart Type",
-                ["Line", "Bar", "Histogram"],
-                horizontal=True,
-                key=f"{sheet}_chart"
+        with col2:
+            chart_type = st.selectbox(
+                f"Select Chart Type ({sheet})",
+                ["Line", "Bar", "Histogram", "Scatter", "Pie"],
+                key=f"chart_{sheet}"
             )
 
-            if chart_type == "Line":
+        # -------- LINE CHART --------
 
-                fig = px.line(
-                    df.head(50),
-                    y=selected_col,
-                    template="plotly_dark"
-                )
+        if chart_type == "Line":
 
-            elif chart_type == "Bar":
-
-                fig = px.bar(
-                    df.head(20),
-                    y=selected_col,
-                    template="plotly_dark"
-                )
-
-            else:
-
-                fig = px.histogram(
-                    df,
-                    x=selected_col,
-                    template="plotly_dark"
-                )
-
-            fig.update_layout(
-                paper_bgcolor="#07111f",
-                plot_bgcolor="#07111f",
-                font_color="white",
-                height=500
+            fig = px.line(
+                df.head(100),
+                y=selected_col,
+                template="plotly_dark",
+                title=f"{selected_col} Line Chart"
             )
 
-            st.plotly_chart(
-                fig,
-                use_container_width=True
+        # -------- BAR CHART --------
+
+        elif chart_type == "Bar":
+
+            fig = px.bar(
+                df.head(30),
+                y=selected_col,
+                template="plotly_dark",
+                title=f"{selected_col} Bar Chart"
             )
 
-        else:
+        # -------- HISTOGRAM --------
 
-            st.info("No numeric columns found.")
+        elif chart_type == "Histogram":
+
+            fig = px.histogram(
+                df,
+                x=selected_col,
+                template="plotly_dark",
+                title=f"{selected_col} Distribution"
+            )
+
+        # -------- SCATTER --------
+
+        elif chart_type == "Scatter":
+
+            second_col = st.selectbox(
+                f"Select Second Column ({sheet})",
+                numeric_cols,
+                key=f"scatter_{sheet}"
+            )
+
+            fig = px.scatter(
+                df.head(100),
+                x=selected_col,
+                y=second_col,
+                template="plotly_dark",
+                title=f"{selected_col} vs {second_col}"
+            )
+
+        # -------- PIE CHART --------
+
+        elif chart_type == "Pie":
+
+            value_counts = df[selected_col].value_counts().head(10)
+
+            fig = px.pie(
+                values=value_counts.values,
+                names=value_counts.index,
+                template="plotly_dark",
+                title=f"{selected_col} Pie Chart"
+            )
+
+        fig.update_layout(
+            paper_bgcolor="#07111f",
+            plot_bgcolor="#07111f",
+            font_color="white",
+            height=500
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    else:
+
+        st.info("No numeric columns found.")
             # ---------------- AI DATA SUMMARY ----------------
 
 st.markdown("## 🤖 AI Dataset Summary")
