@@ -3,6 +3,7 @@ import pandas as pd
 import io
 import uuid
 import plotly.express as px
+from datetime import datetime
 # ---------------- CONFIG ----------------
 FREE_DAILY_LIMIT = 5
 
@@ -513,6 +514,44 @@ if 'cleaned' in locals():
                 {item}
             </div>
             """, unsafe_allow_html=True)
+
+# ---------------- FILE HISTORY ----------------
+
+st.markdown("## 📂 File History")
+
+history = get_file_history(user_id)
+
+if history:
+
+    for item in reversed(history):
+
+        st.markdown(f"""
+        <div style="
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        ">
+            <h4 style="margin:0;color:white;">
+                📄 {item['filename']}
+            </h4>
+
+            <p style="color:#9ca3af;margin-top:8px;">
+                Rows: {item['rows']} |
+                Columns: {item['cols']}
+            </p>
+
+            <p style="color:#64748b;font-size:13px;">
+                Uploaded: {item['created_at']}
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+else:
+
+    st.info("No file history yet.")
 
 
 # ---------------- FOOTER ----------------
