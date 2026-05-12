@@ -366,7 +366,7 @@ if 'cleaned' in locals():
             total_cols
         )
 
-        # ---------------- AI INSIGHTS ----------------
+     # ---------------- AI INSIGHTS ----------------
 
 st.markdown("## 🧠 AI Insights")
 
@@ -376,46 +376,84 @@ if 'cleaned' in locals():
 
         st.markdown(f"### 📄 {sheet}")
 
-        # ---------------- PREMIUM METRICS ----------------
+        insights = []
 
-        total_rows = df.shape[0]
-        total_cols = df.shape[1]
-        missing_values = int(df.isnull().sum().sum())
-        duplicate_rows = int(df.duplicated().sum())
+        # ---------------- MISSING VALUES ----------------
 
-        c1, c2, c3, c4 = st.columns(4)
+        missing = int(df.isnull().sum().sum())
 
-        metrics = [
-            ("📄 Rows", total_rows),
-            ("📊 Columns", total_cols),
-            ("⚠️ Missing", missing_values),
-            ("🔁 Duplicates", duplicate_rows),
-        ]
+        if missing > 0:
+            insights.append(
+                f"⚠️ Found {missing} missing values in the dataset."
+            )
+        else:
+            insights.append(
+                "✅ No missing values detected."
+            )
 
-        for col, (title, value) in zip([c1, c2, c3, c4], metrics):
+        # ---------------- DUPLICATES ----------------
 
-            with col:
+        duplicates = int(df.duplicated().sum())
 
-                st.markdown(f"""
-                <div style="
-                    background: rgba(255,255,255,0.05);
-                    padding: 22px;
-                    border-radius: 18px;
-                    border: 1px solid rgba(255,255,255,0.08);
-                    backdrop-filter: blur(12px);
-                    text-align:center;
-                    box-shadow: 0 0 25px rgba(0,255,180,0.08);
-                    margin-bottom:10px;
-                ">
-                    <h4 style='margin:0;color:#9ca3af;font-size:15px'>
-                        {title}
-                    </h4>
+        if duplicates > 0:
+            insights.append(
+                f"🔁 Found {duplicates} duplicate rows."
+            )
+        else:
+            insights.append(
+                "✅ No duplicate rows detected."
+            )
 
-                    <h1 style='margin-top:10px;color:white;font-size:34px'>
-                        {value}
-                    </h1>
-                </div>
-                """, unsafe_allow_html=True)
+        # ---------------- NUMERIC ANALYSIS ----------------
+
+        numeric_cols = df.select_dtypes(include="number").columns
+
+        if len(numeric_cols) > 0:
+
+            for col in numeric_cols[:3]:
+
+                avg = round(df[col].mean(), 2)
+                highest = round(df[col].max(), 2)
+                lowest = round(df[col].min(), 2)
+
+                insights.append(
+                    f"📊 {col} → Avg: {avg} | Max: {highest} | Min: {lowest}"
+                )
+
+        # ---------------- COLUMN ANALYSIS ----------------
+
+        if len(df.columns) > 15:
+
+            insights.append(
+                "📁 Large dataset detected with many columns."
+            )
+
+        if total_rows > 5000:
+
+            insights.append(
+                "🚀 High-volume dataset detected."
+            )
+
+        # ---------------- SHOW INSIGHTS ----------------
+
+        for item in insights:
+
+            st.markdown(f"""
+            <div style="
+                background: rgba(16,185,129,0.08);
+                border: 1px solid rgba(16,185,129,0.2);
+                padding: 16px;
+                border-radius: 14px;
+                margin-bottom: 12px;
+                color: white;
+                font-size: 16px;
+                box-shadow: 0 0 15px rgba(16,185,129,0.08);
+            ">
+                {item}
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
 
         # ---------------- PREMIUM CHART ----------------
 
