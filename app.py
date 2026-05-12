@@ -525,10 +525,6 @@ if history:
 
     for item in reversed(history):
 
-        filename = item[1]
-        rows = item[2]
-        cols = item[3]
-
         st.markdown(
             f"""
             <div style="
@@ -546,7 +542,7 @@ if history:
                     color:white;
                     font-size:18px;
                 ">
-                    📄 {filename}
+                    📄 {item[0]}
                 </h4>
 
                 <p style="
@@ -554,9 +550,9 @@ if history:
                     margin-top:8px;
                     font-size:14px;
                 ">
-                    📊 Rows: {rows}
+                    📊 Rows: {item[1]}
                     &nbsp;&nbsp;&nbsp;
-                    📁 Columns: {cols}
+                    📁 Columns: {item[2]}
                 </p>
 
             </div>
