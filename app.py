@@ -533,27 +533,40 @@ if history:
             border-radius: 16px;
             margin-bottom: 12px;
             backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0,255,180,0.04);
         ">
-            <h4 style="margin:0;color:white;">
-                📄 {item['filename']}
+
+            <h4 style="
+                margin:0;
+                color:white;
+                font-size:18px;
+            ">
+                📄 {item[1]}
             </h4>
 
-            <p style="color:#9ca3af;margin-top:8px;">
-                Rows: {item['rows']} |
-                Columns: {item['cols']}
+            <p style="
+                color:#94a3b8;
+                margin-top:8px;
+                font-size:14px;
+            ">
+                📊 Rows: {item[2]} &nbsp;&nbsp;&nbsp;
+                📁 Columns: {item[3]}
             </p>
 
-            <p style="color:#64748b;font-size:13px;">
-                Uploaded: {item['created_at']}
+            <p style="
+                color:#64748b;
+                font-size:13px;
+                margin-top:5px;
+            ">
+                🕒 Uploaded: {item[4]}
             </p>
+
         </div>
         """, unsafe_allow_html=True)
 
 else:
 
     st.info("No file history yet.")
-
-
 # ---------------- FOOTER ----------------
 st.markdown("""
 <div style="text-align:center; color:#64748b; margin-top:40px;">
