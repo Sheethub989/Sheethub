@@ -526,9 +526,9 @@ if history:
     for item in history:
 
         # DATABASE VALUES
-        filename = item[1]
-        rows = item[2]
-        cols = item[3]
+        filename = item[0]
+        rows = item[1]
+        cols = item[2]
 
         card_html = f"""
 <div style="
