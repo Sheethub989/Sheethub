@@ -529,39 +529,40 @@ if history:
         rows = item[2]
         cols = item[3]
 
-        card_html = f"""
-        <div style="
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(0,255,180,0.04);
-        ">
-
-            <h4 style="
-                margin:0;
-                color:white;
-                font-size:18px;
+        st.markdown(
+            f"""
+            <div style="
+                background: rgba(255,255,255,0.04);
+                border: 1px solid rgba(255,255,255,0.08);
+                padding: 18px;
+                border-radius: 16px;
+                margin-bottom: 12px;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 0 20px rgba(0,255,180,0.04);
             ">
-                📄 {filename}
-            </h4>
 
-            <p style="
-                color:#94a3b8;
-                margin-top:8px;
-                font-size:14px;
-            ">
-                📊 Rows: {rows}
-                &nbsp;&nbsp;&nbsp;
-                📁 Columns: {cols}
-            </p>
+                <h4 style="
+                    margin:0;
+                    color:white;
+                    font-size:18px;
+                ">
+                    📄 {filename}
+                </h4>
 
-        </div>
-        """
+                <p style="
+                    color:#94a3b8;
+                    margin-top:8px;
+                    font-size:14px;
+                ">
+                    📊 Rows: {rows}
+                    &nbsp;&nbsp;&nbsp;
+                    📁 Columns: {cols}
+                </p>
 
-        st.markdown(card_html, unsafe_allow_html=True)
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 else:
 
