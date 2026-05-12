@@ -487,14 +487,6 @@ if 'cleaned' in locals():
 
         st.markdown("---")
 
-        # ---------------- DATA PREVIEW ----------------
-
-        st.markdown("### 👀 Data Preview")
-
-        st.dataframe(
-            df.head(),
-            use_container_width=True
-        )
 
 # ---------------- FOOTER ----------------
 st.markdown("""
